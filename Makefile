@@ -14,12 +14,17 @@ endif
 
 LDFLAGS_TEST = -L$(FTDIR)/lib -lftcommon -Wl,-rpath,$(FTDIR)/lib
 
-LDFLAGS = -shared $(LDFLAGS_TEST)
-
+OS = $(shell uname -s)
+ifeq ($(OS),Darwin)
+	SHORTNAME = libftastr.dylib
+	LDFLAGS = -dynamiclib $(LDFLAGS_TEST) -install_name @rpath/$(SHORTNAME)
+else
+	SHORTNAME = libftastr.so
+	LDFLAGS = -shared $(LDFLAGS_TEST)
+endif
 LD_LIBRARY_PATH=$(FTDIR)/lib:$(LD_LIBRARY_PATH)
 
 NAME = $(LIBDIR)/$(SHORTNAME)
-SHORTNAME = libftastr.so
 
 SRCS =	ft_astr_add.c \
 		ft_astr_clear.c \
@@ -111,6 +116,7 @@ clean:
 fclean: clean
 	@echo "Clean library ..."
 	@rm -rf $(LIBDIR)
+	@rm -f test.bin
 
 
 re: fclean all

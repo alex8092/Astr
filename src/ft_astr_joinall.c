@@ -23,6 +23,7 @@ char			*p_astr_joinall(t_astr *astr)
 	size_t	count;
 	int		*lens;
 
+	new = NULL;
 	if (astr)
 	{
 		lens = (int *)malloc(sizeof(int) * (astr->m_size));
@@ -38,9 +39,8 @@ char			*p_astr_joinall(t_astr *astr)
 				++i;
 			}
 			new[count] = 0;
-			return (new);
 		}
 		free(lens);
 	}
-	return (0);
+	return (new);
 }
